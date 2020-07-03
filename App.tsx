@@ -4,34 +4,28 @@ import 'react-native-gesture-handler'
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-import CardCarousel from './playgrounds/CardCarousel'
-import PinchScreen from './playgrounds/PinchScreen'
-import Menu from './Menu'
+import { COLOR } from './constants'
+import { STACK } from './stack'
+import MenuScreen from './Menu'
+
+const STACK_WITH_MENU = {
+  ...STACK,
+  Menu: {
+    screen: MenuScreen,
+  },
+}
 
 const AppNavigator = createAppContainer(
-  createStackNavigator(
-    {
-      Menu: {
-        screen: Menu,
+  createStackNavigator(STACK_WITH_MENU, {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: COLOR.AUBERGINE,
+        borderBottomWidth: 0,
       },
-      CardCarousel: {
-        screen: CardCarousel,
-      },
-      PinchScreen: {
-        screen: PinchScreen,
-      },
+      headerTintColor: 'white',
     },
-    {
-      defaultNavigationOptions: {
-        headerStyle: {
-          backgroundColor: '#272741',
-          borderBottomWidth: 0,
-        },
-        headerTintColor: 'white',
-      },
-      initialRouteName: 'Menu',
-    }
-  )
+    initialRouteName: 'Menu',
+  })
 )
 
 export default function App() {

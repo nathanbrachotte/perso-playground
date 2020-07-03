@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from 'react-navigation-hooks'
 
-const PLAYGROUNDS = ['PinchScreen', 'CardCarousel']
+import { PLAYGROUNDS } from './stack'
 
 interface ItemProps {
   title: string
@@ -30,7 +30,7 @@ const Item = ({ title }: ItemProps) => {
   )
 }
 
-const Menu = () => {
+const MenuScreen = () => {
   return (
     <ScrollView style={{ width: '100%' }}>
       {PLAYGROUNDS.map((key) => (
@@ -40,4 +40,4 @@ const Menu = () => {
   )
 }
 
-export default Menu
+export default MenuScreen

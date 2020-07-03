@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
 
 import Animated, { debug } from 'react-native-reanimated'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -7,8 +7,7 @@ import CardItem from './CardItem'
 import { CARD_AMOUNT } from './index'
 import Pagination from './Pagination'
 
-const { width: ww } = Dimensions.get('window')
-const { Value, block, cond, eq, useCode, set, neq, and, event } = Animated
+const { block, useCode, event } = Animated
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 
 interface CarouselProps {

@@ -8,14 +8,28 @@ import {
   State,
 } from 'react-native-gesture-handler'
 
-import { USE_NATIVE_DRIVER } from '../config'
+const USE_NATIVE_DRIVER = true
 
 export class PinchableBox extends React.Component {
   panRef = React.createRef()
   rotationRef = React.createRef()
   pinchRef = React.createRef()
 
-  constructor(props) {
+  _baseScale: any = undefined
+  _pinchScale: any = undefined
+  _scale: any = undefined
+  _lastScale: any = undefined
+  _onPinchGestureEvent: any = undefined
+  _rotate: any = undefined
+  _rotateStr: any = undefined
+  _lastRotate: any = undefined
+  _onRotateGestureEvent: any = undefined
+  _tilt: any = undefined
+  _tiltStr: any = undefined
+  _lastTilt: any = undefined
+  _onTiltGestureEvent: any = undefined
+
+  constructor(props: {}) {
     super(props)
 
     /* Pinching */
@@ -50,21 +64,21 @@ export class PinchableBox extends React.Component {
     })
   }
 
-  _onRotateHandlerStateChange = (event) => {
+  _onRotateHandlerStateChange = (event: any) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastRotate += event.nativeEvent.rotation
       this._rotate.setOffset(this._lastRotate)
       this._rotate.setValue(0)
     }
   }
-  _onPinchHandlerStateChange = (event) => {
+  _onPinchHandlerStateChange = (event: any) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastScale *= event.nativeEvent.scale
       this._baseScale.setValue(this._lastScale)
       this._pinchScale.setValue(1)
     }
   }
-  _onTiltGestureStateChange = (event) => {
+  _onTiltGestureStateChange = (event: any) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastTilt += event.nativeEvent.translationY
       this._tilt.setOffset(this._lastTilt)
@@ -74,6 +88,7 @@ export class PinchableBox extends React.Component {
   render() {
     return (
       <PanGestureHandler
+        //@ts-ignore
         ref={this.panRef}
         onGestureEvent={this._onTiltGestureEvent}
         onHandlerStateChange={this._onTiltGestureStateChange}
@@ -84,6 +99,7 @@ export class PinchableBox extends React.Component {
       >
         <Animated.View style={styles.wrapper}>
           <RotationGestureHandler
+            //@ts-ignore
             ref={this.rotationRef}
             simultaneousHandlers={this.pinchRef}
             onGestureEvent={this._onRotateGestureEvent}
@@ -91,6 +107,7 @@ export class PinchableBox extends React.Component {
           >
             <Animated.View style={styles.wrapper}>
               <PinchGestureHandler
+                //@ts-ignore
                 ref={this.pinchRef}
                 simultaneousHandlers={this.rotationRef}
                 onGestureEvent={this._onPinchGestureEvent}
@@ -109,7 +126,7 @@ export class PinchableBox extends React.Component {
                         ],
                       },
                     ]}
-                    source={require('./swmansion.png')}
+                    source={require('./dd0.png')}
                   />
                 </Animated.View>
               </PinchGestureHandler>
