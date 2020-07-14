@@ -1,6 +1,7 @@
 import CardCarousel from './playgrounds/CardCarousel'
 import PinchScreen from './playgrounds/PinchScreen'
 import KSEButton from './playgrounds/KSE/KSEButton'
+import KSENotification from './playgrounds/KSE/KSENotification'
 
 export const STACK: Record<string, { screen: JSX.Element | Function }> = {
   CardCarousel: {
@@ -11,6 +12,9 @@ export const STACK: Record<string, { screen: JSX.Element | Function }> = {
   },
   KSE_ButtonScreen: {
     screen: KSEButton,
+  },
+  KSE_Notification: {
+    screen: KSENotification,
   },
 } as const
 

@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { COLOR } from '../../../constants'
 import Animated, {
-  sub,
   interpolate,
   Extrapolate,
   concat,
 } from 'react-native-reanimated'
 import { mix } from 'react-native-redash'
+
+import { COLOR } from '../../../constants'
+import { BUTTON_HEIGHT, BUTTON_RADIUS, SUCCESS_SIZE } from './constants'
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
@@ -23,9 +24,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   button: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
+    height: BUTTON_HEIGHT,
+    width: BUTTON_HEIGHT,
+    borderRadius: BUTTON_RADIUS,
     backgroundColor: COLOR.SUCCESS,
     justifyContent: 'center',
     alignItems: 'center',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   text: {
     position: 'absolute',
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: SUCCESS_SIZE,
   },
 })
 
@@ -42,10 +43,14 @@ const SuccessButton = ({
   opacity,
   transformationValue,
 }: SuccessTouchableProps) => {
-  const widthInterpolation = mix(transformationValue, 50, 200)
+  const widthInterpolation = mix(
+    transformationValue,
+    BUTTON_HEIGHT,
+    BUTTON_HEIGHT * 4
+  )
   const rotation = interpolate(opacity, {
     inputRange: [0, 1],
-    outputRange: [-90, 0],
+    outputRange: [-180, 0],
     extrapolate: Extrapolate.CLAMP,
   })
 

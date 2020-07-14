@@ -1,13 +1,15 @@
 import React from 'react'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { COLOR } from '../../../constants'
 import Animated, {
   interpolate,
   Extrapolate,
   concat,
 } from 'react-native-reanimated'
 import { mix } from 'react-native-redash'
+
+import { COLOR } from '../../../constants'
+import { BUTTON_HEIGHT, BUTTON_RADIUS, TEXT_SIZE } from './constants'
 
 interface DefaultTouchableProps {
   transformationValue: Animated.Value<0 | 1>
@@ -20,16 +22,16 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
 
 const styles = StyleSheet.create({
   button: {
-    height: 50,
+    height: BUTTON_HEIGHT,
     backgroundColor: COLOR?.K_PINK, // because expo sometimes doesn't load constants 🤷‍♂️
-    borderRadius: 25,
+    borderRadius: BUTTON_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     textAlign: 'center',
     position: 'absolute',
-    fontSize: 35,
+    fontSize: TEXT_SIZE,
   },
 })
 
@@ -39,28 +41,26 @@ const DefaultTouchable = ({
   opacity,
   isDisabled,
 }: DefaultTouchableProps) => {
-  const widthInterpolation = mix(transformationValue, 50, 200)
+  const widthInterpolation = mix(
+    transformationValue,
+    BUTTON_HEIGHT,
+    BUTTON_HEIGHT * 4
+  )
 
   const textOpacityInterpolated = interpolate(transformationValue, {
-    inputRange: [0, 0.5, 1],
-    outputRange: [0, 1, 1],
+    inputRange: [0, 0.1, 0.7, 1],
+    outputRange: [0, 0, 0, 1],
     extrapolate: Extrapolate.CLAMP,
   })
 
   const activityIndicatorOpacityInterpolated = interpolate(
     transformationValue,
     {
-      inputRange: [0, 0.5, 0.6, 1],
-      outputRange: [1, 0, 0, 0],
+      inputRange: [0, 0.5, 1],
+      outputRange: [1, 0, 0],
       extrapolate: Extrapolate.CLAMP,
     }
   )
-
-  const rotation = interpolate(transformationValue, {
-    inputRange: [0, 1],
-    outputRange: [90, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
 
   return (
     <AnimatedTouchable
@@ -76,10 +76,9 @@ const DefaultTouchable = ({
         style={{
           ...styles.text,
           opacity: textOpacityInterpolated,
-          transform: [{ rotateZ: concat(rotation, 'deg') }],
         }}
       >
-        →
+        Some action
       </Animated.Text>
       <Animated.View
         style={{
@@ -87,7 +86,7 @@ const DefaultTouchable = ({
           opacity: activityIndicatorOpacityInterpolated,
         }}
       >
-        <ActivityIndicator size="small" color={COLOR.AUBERGINE} />
+        <ActivityIndicator size="large" color={COLOR.AUBERGINE} />
       </Animated.View>
     </AnimatedTouchable>
   )

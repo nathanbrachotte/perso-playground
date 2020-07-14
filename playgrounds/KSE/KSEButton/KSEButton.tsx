@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Value } from 'react-native-reanimated'
 
 import { COLOR } from '../../../constants'
 import { STATUS } from './constants'
@@ -13,7 +12,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: COLOR?.AUBERGINE, // because expo sometimes doesn't load constants 🤷‍♂️
+    backgroundColor: COLOR.AUBERGINE,
   },
 })
 
