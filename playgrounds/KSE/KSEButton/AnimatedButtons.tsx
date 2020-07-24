@@ -52,7 +52,6 @@ const AnimatedButtons = ({
       timing({
         from: pinkButton,
         to,
-        // easing: Easing.bezier,
         easing: Easing.bezier(0.17, 0.67, 0.36, 0.93),
       })
     ),
@@ -118,7 +117,6 @@ const AnimatedButtons = ({
 
   useCode(
     () => [
-      debug('////////////////////// Status ->', status),
       cond(eq(status, STATUS.DEFAULT), animateToDefault),
       cond(eq(status, STATUS.FETCHING), animateToFetching),
       cond(eq(status, STATUS.SUCCESS), animateToSuccess),
