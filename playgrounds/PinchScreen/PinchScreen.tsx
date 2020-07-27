@@ -1,13 +1,27 @@
 import * as React from 'react'
 import { View, Text, Image } from 'react-native'
 import { PinchGestureHandler, State } from 'react-native-gesture-handler'
-import Animated, { Value, useCode, block, cond, eq, debug } from 'react-native-reanimated'
-import { onGestureEvent, vec, Vector, transformOrigin, timing } from 'react-native-redash'
+import Animated, {
+  Value,
+  useCode,
+  block,
+  cond,
+  eq,
+  debug,
+} from 'react-native-reanimated'
+import {
+  onGestureEvent,
+  vec,
+  Vector,
+  transformOrigin,
+  timing,
+} from 'react-native-redash'
 
 import { PinchableBox } from './Pinchablebox'
 
 const IMAGE_SIZE = 200
 
+// WIP
 const PinchScreen = () => {
   const state = new Value(State.UNDETERMINED)
   const gestureScale: Animated.Value<number> = new Value(1)
@@ -22,11 +36,20 @@ const PinchScreen = () => {
     focalY: focal.y,
   })
 
-  const scale = cond(eq(state, State.END), timing({ from: gestureScale, to: 1 }), gestureScale)
+  const scale = cond(
+    eq(state, State.END),
+    timing({ from: gestureScale, to: 1 }),
+    gestureScale
+  )
 
   useCode(
     () =>
-      block([cond(eq(state, State.BEGAN), block([vec.set(focal, origin), debug('state', state)]))]),
+      block([
+        cond(
+          eq(state, State.BEGAN),
+          block([vec.set(focal, origin), debug('state', state)])
+        ),
+      ]),
     []
   )
 

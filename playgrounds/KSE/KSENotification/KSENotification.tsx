@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import DrawerItem from './DrawerItem'
 
-import { AMOUNT_ITEMS } from './constants'
+import { AMOUNT_ITEMS, ITEMS, ANIMATION_DURATION } from './constants'
+import { useValue, timing, delay, useClock } from 'react-native-redash'
+import {
+  useCode,
+  block,
+  cond,
+  eq,
+  set,
+  debug,
+  lessThan,
+  greaterThan,
+  and,
+  or,
+  Easing,
+} from 'react-native-reanimated'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -13,30 +27,70 @@ const styles = StyleSheet.create({
   },
 })
 
+// TODO: to make this component scalable,
+// abstract delayUpdate and animateItem to be only called when a new instance is added to ITEMS.
+// for the demo it's good enough
 const KSENotification = () => {
-  const [hasAnimatedIndex, setHasAnimatedIndex] = useState<number>(0)
+  const animatedIndex = useValue<number>(0)
 
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>
+  const animateTo = (to: number) => [
+    set(
+      animatedIndex,
+      timing({
+        from: animatedIndex,
+        to,
+        easing: Easing.bezier(0.17, 0.67, 0.36, 0.93),
+        duration: ANIMATION_DURATION,
+      })
+    ),
+  ]
 
-    if (hasAnimatedIndex < AMOUNT_ITEMS - 1) {
-      timeout = setTimeout(() => {
-        console.log({ hasAnimatedIndex })
-        setHasAnimatedIndex(hasAnimatedIndex + 1)
-        console.log({ hasAnimatedIndex })
-      }, 1000)
-    }
+  const delayUpdate = (
+    fromValue: number,
+    toValue: number,
+    duration: number
+  ) => [
+    cond(
+      eq(animatedIndex, fromValue),
+      delay(set(animatedIndex, toValue), duration)
+    ),
+  ]
 
-    return () => {
-      timeout && clearTimeout(timeout)
-    }
-  }, [hasAnimatedIndex])
+  const animateItem = (setValue: number, maxValue: number) => [
+    cond(
+      or(
+        eq(animatedIndex, setValue),
+        and(
+          greaterThan(animatedIndex, setValue),
+          lessThan(animatedIndex, maxValue)
+        )
+      ),
+      animateTo(maxValue)
+    ),
+  ]
 
-  console.log(hasAnimatedIndex)
+  useCode(
+    () =>
+      block([
+        delayUpdate(0, 0.11, 1000),
+        animateItem(0.1, 1),
+        delayUpdate(1, 1.1, 1000),
+        animateItem(1.1, 2),
+        delayUpdate(2, 2.1, 1000),
+        animateItem(2.1, 3),
+      ]),
+    [animatedIndex]
+  )
+
   return (
     <View style={styles.wrapper}>
       {[...Array(AMOUNT_ITEMS)].map((e, i) => (
-        <DrawerItem key={i} index={i} hasAnimatedIndex={hasAnimatedIndex} />
+        <DrawerItem
+          key={i}
+          index={i}
+          animatedIndex={animatedIndex}
+          data={ITEMS[i]}
+        />
       ))}
     </View>
   )

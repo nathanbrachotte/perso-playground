@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import React from 'react'
+import { StyleSheet, Image } from 'react-native'
 
 const styles = StyleSheet.create({
-  wrapper: {},
-  alert: {
-    fontSize: 30,
+  bell: {
+    height: 50,
+    width: 50,
   },
 })
 
 const Notification = () => {
+  return null
   return (
-    <View style={styles.wrapper}>
-      <Text style={styles.alert}>❗️</Text>
-    </View>
+    <Image source={require('../../../assets/bell.png')} style={styles.bell} />
   )
 }
 

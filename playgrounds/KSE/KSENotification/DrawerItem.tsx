@@ -6,11 +6,7 @@ import Animated, {
   block,
   Easing,
   cond,
-  eq,
   set,
-  not,
-  clockRunning,
-  and,
   greaterOrEq,
   add,
   multiply,
@@ -18,24 +14,20 @@ import Animated, {
 } from 'react-native-reanimated'
 import Notification from './Notification'
 import { COLOR } from '../../../constants'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useValue, mix, timing, useClock } from 'react-native-redash'
-import { AMOUNT_ITEMS } from './constants'
+import { ITEM_HEIGHT, Item, ITEMS, ANIMATION_DURATION } from './constants'
 
-const ITEM_HEIGHT = 75
 const styles = StyleSheet.create({
-  touchable: {
+  item: {
     width: '100%',
-    margin: 20,
-    backgroundColor: 'red',
+    alignItems: 'stretch',
+    flexDirection: 'row',
   },
   wrapper: {
     position: 'absolute',
     width: '90%',
-    marginBottom: 10,
     borderRadius: 25,
     height: ITEM_HEIGHT,
-    paddingHorizontal: 15,
     backgroundColor: COLOR.WHITE,
     shadowColor: COLOR.BLACK,
     shadowOffset: {
@@ -45,8 +37,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 16,
-    alignItems: 'stretch',
-    flexDirection: 'row',
+
+    paddingHorizontal: 15,
+    justifyContent: 'center',
   },
   image: {
     width: 50,
@@ -60,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     paddingLeft: 20,
-    paddingTop: 10,
+    paddingTop: 2,
   },
   notification: {
     alignSelf: 'center',
@@ -74,70 +67,64 @@ const styles = StyleSheet.create({
 })
 
 interface DrawerProps {
-  hasAnimatedIndex: number
+  animatedIndex: Animated.Value<number>
   index: number
+  data: Item
 }
 
-const DrawerItem = ({ hasAnimatedIndex, index }: DrawerProps) => {
+const DrawerItem = ({ animatedIndex, index, data }: DrawerProps) => {
   const itemAnimatedValue = useValue<0 | 1>(0)
   const clock = useClock([])
 
-  function animate() {}
-
   useCode(
-    () =>
-      block([
-        // debug('animation', itemAnimatedValue),
-        cond(
-          greaterOrEq(hasAnimatedIndex, index),
-          block([
-            debug(`drawer${index}`, itemAnimatedValue),
-            set(
-              itemAnimatedValue,
-              timing({
-                from: itemAnimatedValue,
-                to: 1,
-                easing: Easing.bezier(0.17, 0.67, 0.36, 0.93),
-                clock,
-              })
-            ),
-            // debug('drawer', itemAnimatedValue),
-          ])
-        ),
-      ]),
-    [hasAnimatedIndex, index]
+    () => [
+      cond(
+        // use sub here to make it animate on while the parent animated value move content down
+        greaterOrEq(animatedIndex, sub(index, 0.8)),
+        [
+          debug(`drawer${index}`, itemAnimatedValue),
+          set(
+            itemAnimatedValue,
+            timing({
+              from: itemAnimatedValue,
+              to: 1,
+              easing: Easing.bezier(0.17, 0.67, 0.36, 0.93),
+              clock,
+              duration: ANIMATION_DURATION,
+            })
+          ),
+        ]
+      ),
+    ],
+    [animatedIndex, index]
   )
 
-  const translateY = multiply(
-    mix(itemAnimatedValue, -ITEM_HEIGHT, ITEM_HEIGHT),
-    sub(hasAnimatedIndex, index)
+  const translateY = add(
+    20,
+    multiply(ITEM_HEIGHT + 20, sub(animatedIndex, index))
   )
 
-  const scaleY = mix(itemAnimatedValue, 0, 1)
+  const scaleY = mix(itemAnimatedValue, 0.3, 1)
+  const scaleX = mix(itemAnimatedValue, 0.3, 1)
 
   return (
     <Animated.View
       style={{
         ...styles.wrapper,
         top: translateY,
-        transform: [{ scaleY }],
+        transform: [{ scaleY, scaleX }],
       }}
     >
-      <TouchableOpacity style={styles.touchable} onPress={animate}>
-        <Animated.View style={{ ...styles.wrapper, transform: [{}] }}>
-          <Image
-            style={styles.image}
-            source={require('../../PinchScreen/dd0.png')}
-          />
-          <View style={styles.textWrapper}>
-            <Text style={styles.title}>Jane Birkin</Text>
-            <Text style={styles.message}>Jane Birkin</Text>
-          </View>
-          <View style={styles.notification}>
-            <Notification />
-          </View>
-        </Animated.View>
-      </TouchableOpacity>
+      <View style={styles.item}>
+        <Image style={styles.image} source={data.image} />
+        <View style={styles.textWrapper}>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.message}>{data.message}</Text>
+        </View>
+        <View style={styles.notification}>
+          <Notification />
+        </View>
+      </View>
     </Animated.View>
   )
 }
