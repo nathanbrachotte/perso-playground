@@ -20,6 +20,7 @@ export interface AnimatedButtonsProps {
 
 const styles = StyleSheet.create({
   wrapper: {
+    marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },

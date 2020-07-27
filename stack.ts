@@ -13,7 +13,7 @@ export const STACK: Record<string, { screen: JSX.Element | Function }> = {
   KSE_ButtonScreen: {
     screen: KSEButton,
   },
-  KSE_Notification: {
+  'Notification Center': {
     screen: KSENotification,
   },
 } as const

@@ -7,7 +7,7 @@ export interface Item {
 export const ITEMS: Item[] = [
   {
     title: 'New Twitter drama',
-    message: 'Someone wrote offensive stuff again',
+    message: 'Someone wrote offensive stuff',
     image: require('../../../assets/twitter.png'),
   },
   {
@@ -17,7 +17,7 @@ export const ITEMS: Item[] = [
   },
   {
     title: 'Facebook',
-    message: 'Your uncle and grandma still there',
+    message: 'Your uncle and grandma are still there',
     image: require('../../../assets/facebook.png'),
   },
   {
@@ -32,7 +32,7 @@ export const ITEMS: Item[] = [
   },
   {
     title: 'Download done',
-    message: 'Netflix catalogue should be better',
+    message: 'Took 3 weeks',
     image: require('../../../assets/download.png'),
   },
 ]

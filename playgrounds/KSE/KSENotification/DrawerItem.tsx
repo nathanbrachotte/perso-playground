@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import Animated, {
   useCode,
   debug,
-  block,
   Easing,
   cond,
   set,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TextInput, Text } from 'react-native'
 
 import { COLOR } from '../../../constants'
 import { STATUS } from './constants'
@@ -13,6 +13,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     backgroundColor: COLOR.AUBERGINE,
+  },
+  form: {
+    // backgroundColor: 'red',
+    width: '68%',
+    borderBottomColor: COLOR.WHITE,
+    borderBottomWidth: 2,
+    marginBottom: 30,
+    fontSize: 30,
+    color: COLOR.WHITE,
+    marginLeft: 2,
+  },
+  label: {
+    width: '70%',
+    color: COLOR.K_PINK,
+    marginBottom: 5,
+    fontSize: 18,
   },
 })
 
@@ -53,6 +69,10 @@ const KSEButton = () => {
 
   return (
     <View style={styles.wrapper}>
+      {/* <Text style={styles.label}> First name </Text>
+      <TextInput style={styles.form} value="Nathan" />
+      <Text style={styles.label}> Last name </Text>
+      <TextInput style={styles.form} value="Brachotte" /> */}
       <AnimatedButtons
         status={status}
         isDisabled={isDisabled}
