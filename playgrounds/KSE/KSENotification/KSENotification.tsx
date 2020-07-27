@@ -27,9 +27,6 @@ const styles = StyleSheet.create({
   },
 })
 
-// TODO: to make this component scalable,
-// abstract delayUpdate and animateItem to be only called when a new instance is added to ITEMS.
-// for the demo it's good enough
 const KSENotification = () => {
   const animatedIndex = useValue<number>(0)
 
@@ -72,12 +69,19 @@ const KSENotification = () => {
   useCode(
     () =>
       block([
+        // TODO: abstract delayUpdate and animateItem to be only
+        // called when a new instance is added to ITEMS.
+        // for the demo it's good enough
         delayUpdate(0, 0.11, 1000),
         animateItem(0.1, 1),
         delayUpdate(1, 1.1, 1000),
         animateItem(1.1, 2),
         delayUpdate(2, 2.1, 1000),
         animateItem(2.1, 3),
+        delayUpdate(3, 3.1, 1000),
+        animateItem(3.1, 4),
+        delayUpdate(4, 4.1, 1000),
+        animateItem(4.1, 5),
       ]),
     [animatedIndex]
   )

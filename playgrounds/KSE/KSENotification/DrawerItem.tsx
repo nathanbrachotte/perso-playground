@@ -11,6 +11,8 @@ import Animated, {
   add,
   multiply,
   sub,
+  neq,
+  and,
 } from 'react-native-reanimated'
 import Notification from './Notification'
 import { COLOR } from '../../../constants'
@@ -34,19 +36,23 @@ const styles = StyleSheet.create({
       width: 0,
       height: 8,
     },
-    shadowOpacity: 0.44,
+    shadowOpacity: 0.3,
     shadowRadius: 10.32,
     elevation: 16,
 
     paddingHorizontal: 15,
     justifyContent: 'center',
   },
-  image: {
+  imageWrapper: {
     width: 50,
     height: 50,
-    borderRadius: 18,
+    borderRadius: 25,
     alignSelf: 'center',
+    backgroundColor: COLOR.K_PINK,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  image: { width: 30, height: 30 },
   textWrapper: {
     flex: 1,
     flexDirection: 'column',
@@ -80,7 +86,10 @@ const DrawerItem = ({ animatedIndex, index, data }: DrawerProps) => {
     () => [
       cond(
         // use sub here to make it animate on while the parent animated value move content down
-        greaterOrEq(animatedIndex, sub(index, 0.8)),
+        and(
+          greaterOrEq(animatedIndex, sub(index, 0.8)),
+          neq(itemAnimatedValue, 1)
+        ),
         [
           debug(`drawer${index}`, itemAnimatedValue),
           set(
@@ -116,7 +125,9 @@ const DrawerItem = ({ animatedIndex, index, data }: DrawerProps) => {
       }}
     >
       <View style={styles.item}>
-        <Image style={styles.image} source={data.image} />
+        <Animated.View style={styles.imageWrapper}>
+          <Image style={styles.image} source={data.image} />
+        </Animated.View>
         <View style={styles.textWrapper}>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.message}>{data.message}</Text>

@@ -6,29 +6,34 @@ export interface Item {
 
 export const ITEMS: Item[] = [
   {
-    title: 'Dan Abramov',
-    message: "Let's discuss let vs const",
-    image: require('../../PinchScreen/dd0.png'),
+    title: 'New Twitter drama',
+    message: 'Someone wrote offensive stuff again',
+    image: require('../../../assets/twitter.png'),
   },
   {
-    title: 'title',
-    message: 'message',
-    image: require('../../PinchScreen/dd0.png'),
+    title: 'Weekly report',
+    message: "You're still broke",
+    image: require('../../../assets/report.png'),
   },
   {
-    title: 'title',
-    message: 'message',
-    image: require('../../PinchScreen/dd0.png'),
+    title: 'Facebook',
+    message: 'Your uncle and grandma still there',
+    image: require('../../../assets/facebook.png'),
   },
   {
-    title: 'title',
-    message: 'message',
-    image: require('../../PinchScreen/dd0.png'),
+    title: 'New Twitter drama',
+    message: 'Someone wrote offensive stuff again',
+    image: require('../../../assets/twitter.png'),
   },
   {
-    title: 'title',
-    message: 'message',
-    image: require('../../PinchScreen/dd0.png'),
+    title: 'Weekly report',
+    message: "You're still broke",
+    image: require('../../../assets/report.png'),
+  },
+  {
+    title: 'Download done',
+    message: 'Netflix catalogue should be better',
+    image: require('../../../assets/download.png'),
   },
 ]
 
