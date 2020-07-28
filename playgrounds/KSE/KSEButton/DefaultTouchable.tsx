@@ -1,11 +1,7 @@
 import React from 'react'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Animated, {
-  interpolate,
-  Extrapolate,
-  concat,
-} from 'react-native-reanimated'
+import Animated, { interpolate, Extrapolate } from 'react-native-reanimated'
 import { mix } from 'react-native-redash'
 
 import { COLOR } from '../../../constants'
@@ -32,6 +28,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     position: 'absolute',
     fontSize: TEXT_SIZE,
+  },
+  loading: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 2,
+    paddingLeft: 2,
   },
 })
 
@@ -78,11 +80,11 @@ const DefaultTouchable = ({
           opacity: textOpacityInterpolated,
         }}
       >
-        Some action
+        do something
       </Animated.Text>
       <Animated.View
         style={{
-          ...styles.text,
+          ...styles.loading,
           opacity: activityIndicatorOpacityInterpolated,
         }}
       >
