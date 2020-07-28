@@ -2,61 +2,70 @@ import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions, SafeAreaView } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { COLOR } from '../../../constants'
-import { useValue, loop, mix } from 'react-native-redash'
-import Animated, {
-  useCode,
-  set,
-  Easing,
-  debug,
-  interpolate,
-  concat,
-} from 'react-native-reanimated'
+import { useValue, loop, mix, spring } from 'react-native-redash'
+import Animated, { useCode, set, Easing, concat } from 'react-native-reanimated'
 
 const { width: WW, height: WH } = Dimensions.get('window')
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
+
 const PLAYGROUND_HEIGHT = WH * 0.6
 const PLAYGROUND_WIDTH = WW * 0.8
+const IMAGE_SIZE = 100
+
+export const SPRING = {
+  damping: 15,
+  mass: 1,
+  stiffness: 200,
+  overshootClamping: false,
+  restSpeedThreshold: 0.001,
+  restDisplacementThreshold: 0.001,
+}
 
 const styles = StyleSheet.create({
   wrapper: {
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
   },
+  // gotta love flexin'
+  flexer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  buttonSectionWrapper: {
+    justifyContent: 'flex-end',
+    paddingBottom: 20,
+  },
   buttonWrapper: {
     flexDirection: 'row',
-    width: '100%',
+    height: 50,
+    width: '95%',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop: 20,
   },
   button: {
     borderRadius: 25,
     height: 50,
-    width: 80,
+    width: 90,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: { textAlign: 'center', color: COLOR.WHITE },
   playground: {
-    marginTop: 10,
     width: PLAYGROUND_WIDTH,
     height: PLAYGROUND_HEIGHT,
-    backgroundColor: COLOR.K_PINK,
-    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: COLOR.AUBERGINE,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
-    shadowColor: COLOR.BLACK,
+    shadowColor: COLOR.AUBERGINE,
     shadowOffset: {
       width: 0,
-      height: 8,
+      height: 0,
     },
-    shadowOpacity: 1,
-    shadowRadius: 10.32,
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   rectangle: {
-    width: 100,
-    height: 100,
+    width: IMAGE_SIZE,
+    height: IMAGE_SIZE,
     borderRadius: 25,
   },
 })
@@ -68,16 +77,64 @@ interface ButtonProps {
 }
 
 const Button = ({ onPress, label, isActive }: ButtonProps) => {
+  const scale = useValue(0.5)
+
+  useCode(
+    () =>
+      isActive && [
+        set(
+          scale,
+          spring({
+            from: scale,
+            to: 1,
+            config: {
+              ...SPRING,
+            },
+          })
+        ),
+      ],
+    [isActive]
+  )
+
+  useCode(
+    () =>
+      !isActive && [
+        set(
+          scale,
+          spring({
+            from: scale,
+            to: 0.5,
+            config: {
+              ...SPRING,
+            },
+          })
+        ),
+      ],
+    [isActive]
+  )
+
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        ...styles.button,
-        backgroundColor: isActive ? COLOR.SUCCESS : COLOR.FAILURE,
-      }}
-    >
-      <Text style={styles.buttonText}>{label}</Text>
-    </TouchableOpacity>
+    <View style={styles.flexer}>
+      <AnimatedTouchable
+        onPress={onPress}
+        style={{
+          ...styles.button,
+          backgroundColor: isActive ? COLOR.SUCCESS : COLOR.FAILURE,
+          width: 90,
+          height: 50,
+          transform: [
+            {
+              scaleX: scale,
+            },
+            {
+              scaleY: scale,
+            },
+          ],
+        }}
+      >
+        <Text style={{ ...styles.buttonText, fontSize: 15 }}>{label}</Text>
+      </AnimatedTouchable>
+    </View>
   )
 }
 
@@ -117,11 +174,19 @@ const Transitions = () => {
   )
 
   const translateXInterpolated = translateX
-    ? mix(animatedValue, -PLAYGROUND_WIDTH / 2, PLAYGROUND_WIDTH / 2)
+    ? mix(
+        animatedValue,
+        -PLAYGROUND_WIDTH / 2 + IMAGE_SIZE / 2,
+        PLAYGROUND_WIDTH / 2 - IMAGE_SIZE / 2
+      )
     : DEFAULT_ANIMATED_VALUE
 
   const translateYInterpolated = translateY
-    ? mix(animatedValue, -PLAYGROUND_HEIGHT / 2, PLAYGROUND_HEIGHT / 2)
+    ? mix(
+        animatedValue,
+        -PLAYGROUND_HEIGHT / 2 + IMAGE_SIZE / 2,
+        PLAYGROUND_HEIGHT / 2 - IMAGE_SIZE / 2
+      )
     : DEFAULT_ANIMATED_VALUE
 
   const rotateXInterpolated = rotateX
@@ -144,81 +209,91 @@ const Transitions = () => {
 
   return (
     <SafeAreaView style={styles.wrapper}>
-      <View style={styles.playground}>
-        <Animated.Image
-          source={require('../../../assets/cat.png')}
-          style={{
-            ...styles.rectangle,
-            transform: [
-              {
-                translateX: translateXInterpolated,
-              },
-              {
-                translateY: translateYInterpolated,
-              },
-              {
-                rotateX: rotateXInterpolated,
-              },
-              {
-                rotateY: rotateYInterpolated,
-              },
-              {
-                rotateZ: rotateZInterpolated,
-              },
-              {
-                scaleX: scaleXInterpolated,
-              },
-              {
-                scaleY: scaleYInterpolated,
-              },
-            ],
-            opacity: opacityInterpolated,
-          }}
-        />
+      <View style={styles.flexer}>
+        <View style={styles.playground}>
+          <Animated.Image
+            source={require('../../../assets/cat.png')}
+            style={{
+              ...styles.rectangle,
+              transform: [
+                {
+                  translateX: translateXInterpolated,
+                },
+                {
+                  translateY: translateYInterpolated,
+                },
+                {
+                  rotateX: rotateXInterpolated,
+                },
+                {
+                  rotateY: rotateYInterpolated,
+                },
+                {
+                  rotateZ: rotateZInterpolated,
+                },
+                {
+                  scaleX: scaleXInterpolated,
+                },
+                {
+                  scaleY: scaleYInterpolated,
+                },
+              ],
+              opacity: opacityInterpolated,
+            }}
+          />
+        </View>
       </View>
-      <View style={styles.buttonWrapper}>
-        <Button
-          onPress={() => toggle(setTranslateX)}
-          label="TranslateX"
-          isActive={translateX}
-        />
-        <Button
-          onPress={() => toggle(setTranslateY)}
-          label="TranslateY"
-          isActive={translateY}
-        />
-        <Button
-          onPress={() => toggle(setRotateX)}
-          label="RotateX"
-          isActive={rotateX}
-        />
-        <Button
-          onPress={() => toggle(setRotateY)}
-          label="RotateY"
-          isActive={rotateY}
-        />
-      </View>
-      <View style={styles.buttonWrapper}>
-        <Button
-          onPress={() => toggle(setRotateZ)}
-          label="RotateZ"
-          isActive={rotateZ}
-        />
-        <Button
-          onPress={() => toggle(setOpacity)}
-          label="Opacity"
-          isActive={opacity}
-        />
-        <Button
-          onPress={() => toggle(setScaleX)}
-          label="ScaleX"
-          isActive={scaleX}
-        />
-        <Button
-          onPress={() => toggle(setScaleY)}
-          label="ScaleY"
-          isActive={scaleY}
-        />
+      <View style={styles.buttonSectionWrapper}>
+        <View style={styles.buttonWrapper}>
+          <Button
+            onPress={() => toggle(setTranslateX)}
+            label="TranslateX"
+            isActive={translateX}
+          />
+
+          <Button
+            onPress={() => toggle(setTranslateY)}
+            label="TranslateY"
+            isActive={translateY}
+          />
+
+          <Button
+            onPress={() => toggle(setRotateX)}
+            label="RotateX"
+            isActive={rotateX}
+          />
+
+          <Button
+            onPress={() => toggle(setRotateY)}
+            label="RotateY"
+            isActive={rotateY}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            onPress={() => toggle(setRotateZ)}
+            label="RotateZ"
+            isActive={rotateZ}
+          />
+
+          <Button
+            onPress={() => toggle(setOpacity)}
+            label="Opacity"
+            isActive={opacity}
+          />
+
+          <Button
+            onPress={() => toggle(setScaleX)}
+            label="ScaleX"
+            isActive={scaleX}
+          />
+
+          <Button
+            onPress={() => toggle(setScaleY)}
+            label="ScaleY"
+            isActive={scaleY}
+          />
+        </View>
       </View>
     </SafeAreaView>
   )
