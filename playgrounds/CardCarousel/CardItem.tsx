@@ -18,8 +18,6 @@ interface CardItemProps {
 
 export const CARD_WIDTH = 250
 
-console.log({ ww })
-
 const CardItem = ({ scrollY, index, carouselIndex }: CardItemProps) => {
   const thisItemLeftPoint = index * ww
   const thisItemRightPoint = (index + 1) * ww
