@@ -1,8 +1,12 @@
 import * as React from 'react'
-import { View, Text, Dimensions } from 'react-native'
-import Animated, { Value, interpolate, concat, Extrapolate } from 'react-native-reanimated'
-import { mix } from 'react-native-redash'
-import { CARD_AMOUNT } from '.'
+import { View, Dimensions } from 'react-native'
+import Animated, {
+  Value,
+  interpolate,
+  concat,
+  Extrapolate,
+} from 'react-native-reanimated'
+import { COLOR } from '../../constants'
 
 const { width: ww } = Dimensions.get('window')
 
@@ -82,7 +86,12 @@ const CardItem = ({ scrollY, index, carouselIndex }: CardItemProps) => {
     case 3:
       animations = {
         opacity,
-        transform: [{ perspective: 1000 }, { translateX }, { translateY }, { scale }],
+        transform: [
+          { perspective: 1000 },
+          { translateX },
+          { translateY },
+          { scale },
+        ],
       }
       break
     case 4:
@@ -131,11 +140,12 @@ const CardItem = ({ scrollY, index, carouselIndex }: CardItemProps) => {
         alignItems: 'center',
       }}
     >
-      <Animated.Image
-        source={require('./assets/klarna-card-pink-horizontal.png')}
+      <Animated.View
         style={{
           width: CARD_WIDTH,
           height: CARD_WIDTH * 0.62,
+          backgroundColor: COLOR.AUBERGINE,
+          borderRadius: CARD_WIDTH / 2,
           // transform: [{ translateY: translateY }],
           // transform: [{ rotateY: concat(rotateY, 'deg'), rotateZ: concat(rotateZ, 'deg') }],
           // TODO: Nathan try this

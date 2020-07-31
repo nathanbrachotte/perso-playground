@@ -102,6 +102,7 @@ const KSENotification = () => {
           data={ITEMS[i]}
         />
       ))}
+      {/* Just to get a proper recording of the notifications, we only trigger the index 1+ on click */}
       <TouchableOpacity
         onPress={() => setIsOn((isOn) => !isOn)}
         style={styles.hiddenTriggerButton}

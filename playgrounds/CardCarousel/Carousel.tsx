@@ -2,13 +2,11 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
 import Animated, { debug } from 'react-native-reanimated'
-import { ScrollView } from 'react-native-gesture-handler'
 import CardItem from './CardItem'
-import { CARD_AMOUNT } from './index'
+import { CARD_AMOUNT } from './constants'
 import Pagination from './Pagination'
 
 const { block, useCode, event } = Animated
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 
 interface CarouselProps {
   scrollY: Animated.Value<number>
@@ -25,19 +23,26 @@ const Carousel = ({ scrollY, carouselIndex }: CarouselProps) => {
   let cards = []
 
   for (let i: number = 0; i < CARD_AMOUNT; i++) {
-    cards.push(<CardItem key={i} scrollY={scrollY} index={i} carouselIndex={carouselIndex} />)
+    cards.push(
+      <CardItem
+        key={i}
+        scrollY={scrollY}
+        index={i}
+        carouselIndex={carouselIndex}
+      />
+    )
   }
 
   return (
     <View>
-      <AnimatedScrollView
+      <Animated.ScrollView
         horizontal
         pagingEnabled
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
         // bounces={false}
         style={styles.scrollview}
-        show
+        // show={true}
         onScroll={event(
           [
             {
@@ -52,7 +57,7 @@ const Carousel = ({ scrollY, carouselIndex }: CarouselProps) => {
         )}
       >
         {cards}
-      </AnimatedScrollView>
+      </Animated.ScrollView>
       <Pagination scrollY={scrollY} />
     </View>
   )

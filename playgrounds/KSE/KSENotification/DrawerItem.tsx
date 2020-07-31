@@ -13,10 +13,9 @@ import Animated, {
   neq,
   and,
 } from 'react-native-reanimated'
-import Notification from './Notification'
 import { COLOR } from '../../../constants'
 import { useValue, mix, timing, useClock } from 'react-native-redash'
-import { ITEM_HEIGHT, Item, ITEMS, ANIMATION_DURATION } from './constants'
+import { ITEM_HEIGHT, Item, ANIMATION_DURATION } from './constants'
 
 const styles = StyleSheet.create({
   item: {
@@ -130,9 +129,6 @@ const DrawerItem = ({ animatedIndex, index, data }: DrawerProps) => {
         <View style={styles.textWrapper}>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.message}>{data.message}</Text>
-        </View>
-        <View style={styles.notification}>
-          <Notification />
         </View>
       </View>
     </Animated.View>

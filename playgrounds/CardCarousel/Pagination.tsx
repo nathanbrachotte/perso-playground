@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { View, Text, Dimensions } from 'react-native'
-import Animated, { Value } from 'react-native-reanimated'
+import { View, Dimensions } from 'react-native'
+import { Value } from 'react-native-reanimated'
 
-import { CARD_AMOUNT } from '.'
+import { CARD_AMOUNT } from './constants'
 import PaginationItem from './PaginationItem'
 
 const { width: ww } = Dimensions.get('window')

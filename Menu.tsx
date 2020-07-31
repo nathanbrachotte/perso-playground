@@ -4,6 +4,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from 'react-navigation-hooks'
 
 import { PLAYGROUNDS } from './stack'
+import { COLOR } from './constants'
 
 interface ItemProps {
   title: string
@@ -16,8 +17,8 @@ const Item = ({ title }: ItemProps) => {
       style={{
         alignSelf: 'center',
         borderRadius: 40,
-        backgroundColor: '#FFB3C7',
-        height: 150,
+        backgroundColor: COLOR.K_PINK,
+        height: 80,
         width: '90%',
         justifyContent: 'center',
         alignItems: 'center',

@@ -13,14 +13,17 @@ const PLAYGROUND_HEIGHT = WH * 0.6
 const PLAYGROUND_WIDTH = WW * 0.8
 const IMAGE_SIZE = 100
 
-export const SPRING = {
-  damping: 15,
-  mass: 1,
-  stiffness: 200,
-  overshootClamping: false,
-  restSpeedThreshold: 0.001,
-  restDisplacementThreshold: 0.001,
-}
+export const springConfig = () => ({
+  velocity: 4,
+  config: {
+    damping: 15,
+    mass: 1,
+    stiffness: 200,
+    overshootClamping: false,
+    restSpeedThreshold: 0.001,
+    restDisplacementThreshold: 0.001,
+  },
+})
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -34,6 +37,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   buttonWrapper: {
+    marginTop: 10,
     flexDirection: 'row',
     height: 50,
     width: '95%',
@@ -81,35 +85,27 @@ const Button = ({ onPress, label, isActive }: ButtonProps) => {
 
   useCode(
     () =>
-      isActive && [
-        set(
-          scale,
-          spring({
-            from: scale,
-            to: 1,
-            config: {
-              ...SPRING,
-            },
-          })
-        ),
-      ],
-    [isActive]
-  )
-
-  useCode(
-    () =>
-      !isActive && [
-        set(
-          scale,
-          spring({
-            from: scale,
-            to: 0.5,
-            config: {
-              ...SPRING,
-            },
-          })
-        ),
-      ],
+      isActive
+        ? [
+            set(
+              scale,
+              spring({
+                from: scale,
+                to: 1,
+                ...springConfig(),
+              })
+            ),
+          ]
+        : [
+            set(
+              scale,
+              spring({
+                from: scale,
+                to: 0.5,
+                ...springConfig(),
+              })
+            ),
+          ],
     [isActive]
   )
 
