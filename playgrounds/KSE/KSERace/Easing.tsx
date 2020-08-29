@@ -148,6 +148,7 @@ const EasingComp = ({ isRaceOn }: { isRaceOn: boolean }) => {
         </View>
       </View>
       <View style={styles.raceWrapper}>
+        <Spacer />
         <Racer
           image={require('../../../assets/cat.png')}
           animatedValue={translateXDefault}
@@ -163,19 +164,19 @@ const EasingComp = ({ isRaceOn }: { isRaceOn: boolean }) => {
         <Racer
           image={require('../../../assets/doggo.png')}
           animatedValue={translateXUpdatableEaseIn}
-          label="Ease-in"
+          label="Ease in"
         />
         <Spacer />
         <Racer
           image={require('../../../assets/doggo.png')}
           animatedValue={translateXUpdatableEaseOut}
-          label="Ease-out"
+          label="Ease out"
         />
         <Spacer />
         <Racer
           image={require('../../../assets/doggo.png')}
           animatedValue={translateXUpdatableEaseInOut}
-          label="Ease-in & out"
+          label="Ease in & out"
         />
 
         <Spacer height={20} />

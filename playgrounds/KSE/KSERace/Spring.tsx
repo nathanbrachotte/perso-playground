@@ -85,7 +85,7 @@ const Spring = ({ isRaceOn }: { isRaceOn: boolean }) => {
             animateSpring({
               value: springValueMoreDamping,
               to: 1,
-              config: { damping: 50 },
+              config: { damping: 20 },
             }),
           ])
         : block([
@@ -118,7 +118,7 @@ const Spring = ({ isRaceOn }: { isRaceOn: boolean }) => {
             animateSpring({
               value: springValueMoreDamping,
               to: 0,
-              config: { damping: 50 },
+              config: { damping: 20 },
             }),
           ]),
     [isRaceOn]
@@ -170,31 +170,16 @@ const Spring = ({ isRaceOn }: { isRaceOn: boolean }) => {
         <Spacer />
         <Racer
           image={require('../../../assets/doggo.png')}
-          animatedValue={translateXSpringLessVelocity}
-          label="Less Velocity"
-        />
-        <Racer
-          image={require('../../../assets/doggo.png')}
           animatedValue={translateXSpringMoreVelocity}
-          label="More Velocity"
+          label="More Mass"
         />
         <Spacer />
-        <Racer
-          image={require('../../../assets/doggo.png')}
-          animatedValue={translateXSpringLessStiffness}
-          label="Less Stiffness"
-        />
         <Racer
           image={require('../../../assets/doggo.png')}
           animatedValue={translateXSpringMoreStiffness}
           label="More Stiffness"
         />
         <Spacer />
-        <Racer
-          image={require('../../../assets/doggo.png')}
-          animatedValue={translateXSpringLessDamping}
-          label="Less Damping"
-        />
         <Racer
           image={require('../../../assets/doggo.png')}
           animatedValue={translateXSpringMoreDamping}

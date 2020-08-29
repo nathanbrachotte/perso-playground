@@ -9,7 +9,7 @@ export const STACK: Record<string, { screen: JSX.Element | Function }> = {
   Transitions: {
     screen: Transitions,
   },
-  'Easing/Spring & Duration': {
+  'Easing/Spring': {
     screen: KSERace,
   },
   'Notification Center': {

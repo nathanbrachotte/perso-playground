@@ -3,8 +3,8 @@ import { SpringConfig } from 'react-native-redash'
 
 export const { width: WW } = Dimensions.get('window')
 
-export const SHOW_EASING = true
-export const SHOW_SPRING = false
+export const SHOW_EASING = false
+export const SHOW_SPRING = true
 
 export const CAT_SIZE = 60
 export const RACE_MARGIN = 40
